@@ -1,0 +1,18 @@
+AI Sandbox conformance report
+platform: http://localhost:8000
+duration: 0s
+
+fail=5
+
+[        FAIL] route_canary::git_repo
+            fail  git_repo.can_submit: launch rejected: POST /sandbox/launch -> 400: {"detail":"Provide exactly one of template_id or free_text_request."}
+[        FAIL] route_canary::rest_api
+            fail  rest_api.can_submit: launch rejected: POST /sandbox/launch -> 400: {"detail":"Provide exactly one of template_id or free_text_request."}
+[        FAIL] route_canary::notebook
+            fail  notebook.can_submit: launch rejected: POST /sandbox/launch -> 400: {"detail":"Provide exactly one of template_id or free_text_request."}
+[        FAIL] route_canary::cli
+            fail  cli.can_submit: 'ai-sandbox' not on PATH; install the platform CLI
+[        FAIL] route_canary::sdk
+            fail  sdk.can_submit: platform SDK (`ai_sandbox`) not importable
+
+Skipped: real workloads (--skip-workloads), adversarial suite (--skip-adversarial)
