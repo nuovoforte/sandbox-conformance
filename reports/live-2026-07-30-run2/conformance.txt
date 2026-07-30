@@ -1,0 +1,56 @@
+AI Sandbox conformance report
+platform: http://127.0.0.1:8600
+duration: 1365s
+
+fail=6  unobservable=6  error=1
+
+[UNOBSERVABLE] route_canary::git_repo
+    unobservable  git_repo.can_retrieve_artifact: No manifest marker found in captured output; results cannot be retrieved through this route.
+    unobservable  interactive_jupyter_is_observable: A Jupyter endpoint is advertised, but work done in an interactive session creates no workload_runs row, no exit code, and no audit event. Anything a developer runs there is invisible to the platform — untracked, undebuggable, and outside the failure-detection path spec section 6 promises.
+[UNOBSERVABLE] route_canary::rest_api
+    unobservable  rest_api.can_retrieve_artifact: No manifest marker found in captured output; results cannot be retrieved through this route.
+    unobservable  interactive_jupyter_is_observable: A Jupyter endpoint is advertised, but work done in an interactive session creates no workload_runs row, no exit code, and no audit event. Anything a developer runs there is invisible to the platform — untracked, undebuggable, and outside the failure-detection path spec section 6 promises.
+[UNOBSERVABLE] route_canary::notebook
+    unobservable  notebook.can_retrieve_artifact: No manifest marker found in captured output; results cannot be retrieved through this route.
+    unobservable  interactive_jupyter_is_observable: A Jupyter endpoint is advertised, but work done in an interactive session creates no workload_runs row, no exit code, and no audit event. Anything a developer runs there is invisible to the platform — untracked, undebuggable, and outside the failure-detection path spec section 6 promises.
+[        FAIL] route_canary::cli
+            fail  cli.can_submit: 'ai-sandbox' not on PATH; install the platform CLI
+[        FAIL] route_canary::sdk
+            fail  sdk.can_submit: SDK launch raised ConnectError('[Errno 61] Connection refused')
+[UNOBSERVABLE] workload::lora
+    unobservable  git_repo.can_retrieve_artifact: No manifest marker found in captured output; results cannot be retrieved through this route.
+    unobservable  lora.result_is_correct: No workload manifest recoverable from run output.
+[UNOBSERVABLE] workload::whisper
+    unobservable  git_repo.can_retrieve_artifact: No manifest marker found in captured output; results cannot be retrieved through this route.
+    unobservable  whisper.result_is_correct: No workload manifest recoverable from run output.
+[UNOBSERVABLE] workload::faiss
+    unobservable  git_repo.can_retrieve_artifact: No manifest marker found in captured output; results cannot be retrieved through this route.
+    unobservable  faiss.result_is_correct: No workload manifest recoverable from run output.
+[        FAIL] cuda_oom
+            fail  instance_not_left_nominally_active: Instance still RUNNING after its workload died. Spec section 6 explicitly forbids a nominally-active dead sandbox — this is billing with nothing watching it.
+            fail  billing_stopped_on_runtime_failure: Instance in 'running' — no evidence the billable resource was released.
+    unobservable  gpu_reclaimed_for_next_tenant: Requires launching a fresh instance on the same physical GPU and reading free VRAM at start. The platform exposes no device affinity, so this cannot be asserted through the API — check manually via the provider console.
+[        FAIL] host_ram_exhaustion
+            fail  killed_at_container_limit: Output never mentions a container-level kill (SIGKILL/137/cgroup OOM). A developer reading this cannot self-diagnose; they will open a support ticket.
+            fail  metrics_kept_reporting: Only 1 usable ram sample(s) across 1 metric rows — the metrics path died during the incident it exists to report on.
+            fail  instance_not_left_nominally_active: Instance still RUNNING after its workload died. Spec section 6 explicitly forbids a nominally-active dead sandbox — this is billing with nothing watching it.
+            fail  victim_job_survived: Concurrent healthy job ended 'failed'. One tenant's fault destroyed another tenant's work; this is an isolation failure, not a workload bug.
+[        FAIL] hung_network_read
+            fail  termination_reason_is_legible: Output never mentions a timeout, runtime limit, or quota stop. A developer reading this cannot self-diagnose; they will open a support ticket.
+    unobservable  idle_gpu_detected: No GPU-utilization samples retrievable, so idleness is invisible.
+    unobservable  gate_b_kept_metering: Gate B's poll cadence is only visible in usage_records and the admin surface; /billing/usage would confirm it but is outside this harness's user-scoped credentials.
+[       ERROR] kill_at_60_resume_from_checkpoint
+           error  harness: platform error: could not launch with volume: launch rejected: POST /sandbox/launch -> 422: {"detail":[{"type":"value_error","loc":["body"],"msg":"Value error, provider must be set explicitly when creating a new volume at launch time","input":{"template_id":"jupyter","workload_source":"git_repo","git_repo_url":"https://github.com/nuovoforte/sandbox-conformance.git","git_repo_ref":"main","run_command":"python -m conformance.workloads.lora run --output-dir /mnt/volume/artifacts --checkpoin
+[        FAIL] disk_exhaustion
+            fail  enospc_error_is_legible: Output never mentions a full disk / ENOSPC. A developer reading this cannot self-diagnose; they will open a support ticket.
+    unobservable  disk_metrics_showed_the_ramp: Fewer than two rows carried both disk_used_gb and disk_total_gb.
+    unobservable  volume_reclaimed_on_teardown: Provider-side storage reclamation is not visible through the platform API. Verify against the provider account directly.
+            fail  victim_job_survived: Concurrent healthy job ended 'failed'. One tenant's fault destroyed another tenant's work; this is an isolation failure, not a workload bug.
+
+Questions this platform cannot currently answer about itself:
+  - route_canary::git_repo
+  - route_canary::rest_api
+  - route_canary::notebook
+  - workload::lora
+  - workload::whisper
+  - workload::faiss

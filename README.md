@@ -132,13 +132,10 @@ have a concrete finding rather than an assumption.
 
 ## Read this before running against a live environment
 
-Spec section 30 documents **five real, billable RunPod pods created accidentally
-in one session**, caused by `celery_supervisor.py` auto-starting live Celery
-workers whenever the shared dev Postgres holds a non-terminal `SandboxInstance`
-row — bypassing every `MockProvider` override.
-
 This harness creates non-terminal instances continuously, and deliberately makes
-them fail. That is precisely the trigger condition. So `conformance run` refuses
+them fail — the normal operating state for a target platform's background
+workers can, under some configurations, turn that into real provider calls
+against a real account. That has happened before. So `conformance run` refuses
 to start until you acknowledge it:
 
 ```bash

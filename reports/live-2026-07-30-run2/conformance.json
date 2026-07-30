@@ -1,0 +1,656 @@
+{
+  "platform_base_url": "http://127.0.0.1:8600",
+  "started_at_unix": 1785432065.311,
+  "duration_seconds": 1364.93,
+  "counts": {
+    "pass": 0,
+    "fail": 6,
+    "unobservable": 6,
+    "skipped": 0,
+    "error": 1
+  },
+  "skipped": [],
+  "results": [
+    {
+      "scenario": "route_canary::git_repo",
+      "route": "git_repo",
+      "verdict": "unobservable",
+      "instance_id": "330d37ef-b7b1-4d02-8d71-94d4034654f9",
+      "workload_run_id": null,
+      "started_at_unix": 1785432065.311,
+      "duration_seconds": 244.36,
+      "victim_survived": null,
+      "observations": [
+        {
+          "key": "git_repo.can_submit",
+          "verdict": "pass",
+          "detail": "launched with git_repo workload source",
+          "evidence": {}
+        },
+        {
+          "key": "git_repo.can_report_status",
+          "verdict": "pass",
+          "detail": "Run status 'failed' after 221s.",
+          "evidence": {
+            "status": "failed"
+          }
+        },
+        {
+          "key": "git_repo.can_retrieve_artifact",
+          "verdict": "unobservable",
+          "detail": "No manifest marker found in captured output; results cannot be retrieved through this route.",
+          "evidence": {}
+        },
+        {
+          "key": "git_repo.can_report_exit_code",
+          "verdict": "pass",
+          "detail": "exit_code=127 (field 'exit_code')",
+          "evidence": {}
+        },
+        {
+          "key": "interactive_jupyter_is_observable",
+          "verdict": "unobservable",
+          "detail": "A Jupyter endpoint is advertised, but work done in an interactive session creates no workload_runs row, no exit code, and no audit event. Anything a developer runs there is invisible to the platform \u2014 untracked, undebuggable, and outside the failure-detection path spec section 6 promises.",
+          "evidence": {
+            "runs_visible": 1,
+            "checked_at": 1785432308.789
+          }
+        }
+      ],
+      "workload_metrics": null,
+      "notes": []
+    },
+    {
+      "scenario": "route_canary::rest_api",
+      "route": "rest_api",
+      "verdict": "unobservable",
+      "instance_id": "490778eb-c424-4eea-a9b4-24d73c209bf0",
+      "workload_run_id": "0574e568-2c2b-4b90-8210-d352b82fbfc0",
+      "started_at_unix": 1785432309.667,
+      "duration_seconds": 59.96,
+      "victim_survived": null,
+      "observations": [
+        {
+          "key": "rest_api.can_submit",
+          "verdict": "pass",
+          "detail": "attached via POST workload-run",
+          "evidence": {}
+        },
+        {
+          "key": "rest_api.can_report_status",
+          "verdict": "pass",
+          "detail": "Run status 'failed' after 20s.",
+          "evidence": {
+            "status": "failed"
+          }
+        },
+        {
+          "key": "rest_api.can_retrieve_artifact",
+          "verdict": "unobservable",
+          "detail": "No manifest marker found in captured output; results cannot be retrieved through this route.",
+          "evidence": {}
+        },
+        {
+          "key": "rest_api.can_report_exit_code",
+          "verdict": "pass",
+          "detail": "exit_code=127 (field 'exit_code')",
+          "evidence": {}
+        },
+        {
+          "key": "interactive_jupyter_is_observable",
+          "verdict": "unobservable",
+          "detail": "A Jupyter endpoint is advertised, but work done in an interactive session creates no workload_runs row, no exit code, and no audit event. Anything a developer runs there is invisible to the platform \u2014 untracked, undebuggable, and outside the failure-detection path spec section 6 promises.",
+          "evidence": {
+            "runs_visible": 1,
+            "checked_at": 1785432368.988
+          }
+        }
+      ],
+      "workload_metrics": null,
+      "notes": []
+    },
+    {
+      "scenario": "route_canary::notebook",
+      "route": "notebook",
+      "verdict": "unobservable",
+      "instance_id": "15c55921-1a7b-4efe-8f99-f0205e4bd818",
+      "workload_run_id": null,
+      "started_at_unix": 1785432369.624,
+      "duration_seconds": 69.58,
+      "victim_survived": null,
+      "observations": [
+        {
+          "key": "notebook.can_submit",
+          "verdict": "pass",
+          "detail": "launched via papermill notebook",
+          "evidence": {}
+        },
+        {
+          "key": "notebook.can_report_status",
+          "verdict": "pass",
+          "detail": "Run status 'failed' after 50s.",
+          "evidence": {
+            "status": "failed"
+          }
+        },
+        {
+          "key": "notebook.can_retrieve_artifact",
+          "verdict": "unobservable",
+          "detail": "No manifest marker found in captured output; results cannot be retrieved through this route.",
+          "evidence": {}
+        },
+        {
+          "key": "notebook.can_report_exit_code",
+          "verdict": "pass",
+          "detail": "exit_code=1 (field 'exit_code')",
+          "evidence": {}
+        },
+        {
+          "key": "interactive_jupyter_is_observable",
+          "verdict": "unobservable",
+          "detail": "A Jupyter endpoint is advertised, but work done in an interactive session creates no workload_runs row, no exit code, and no audit event. Anything a developer runs there is invisible to the platform \u2014 untracked, undebuggable, and outside the failure-detection path spec section 6 promises.",
+          "evidence": {
+            "runs_visible": 1,
+            "checked_at": 1785432437.945
+          }
+        }
+      ],
+      "workload_metrics": null,
+      "notes": []
+    },
+    {
+      "scenario": "route_canary::cli",
+      "route": "cli",
+      "verdict": "fail",
+      "instance_id": null,
+      "workload_run_id": null,
+      "started_at_unix": 1785432439.207,
+      "duration_seconds": 0.02,
+      "victim_survived": null,
+      "observations": [
+        {
+          "key": "cli.can_submit",
+          "verdict": "fail",
+          "detail": "'ai-sandbox' not on PATH; install the platform CLI",
+          "evidence": {}
+        },
+        {
+          "key": "cli.can_report_status",
+          "verdict": "skipped",
+          "detail": "submission did not succeed",
+          "evidence": {}
+        },
+        {
+          "key": "cli.can_retrieve_artifact",
+          "verdict": "skipped",
+          "detail": "submission did not succeed",
+          "evidence": {}
+        },
+        {
+          "key": "cli.can_report_exit_code",
+          "verdict": "skipped",
+          "detail": "submission did not succeed",
+          "evidence": {}
+        }
+      ],
+      "workload_metrics": null,
+      "notes": []
+    },
+    {
+      "scenario": "route_canary::sdk",
+      "route": "sdk",
+      "verdict": "fail",
+      "instance_id": null,
+      "workload_run_id": null,
+      "started_at_unix": 1785432439.23,
+      "duration_seconds": 0.14,
+      "victim_survived": null,
+      "observations": [
+        {
+          "key": "sdk.can_submit",
+          "verdict": "fail",
+          "detail": "SDK launch raised ConnectError('[Errno 61] Connection refused')",
+          "evidence": {}
+        },
+        {
+          "key": "sdk.can_report_status",
+          "verdict": "skipped",
+          "detail": "submission did not succeed",
+          "evidence": {}
+        },
+        {
+          "key": "sdk.can_retrieve_artifact",
+          "verdict": "skipped",
+          "detail": "submission did not succeed",
+          "evidence": {}
+        },
+        {
+          "key": "sdk.can_report_exit_code",
+          "verdict": "skipped",
+          "detail": "submission did not succeed",
+          "evidence": {}
+        }
+      ],
+      "workload_metrics": null,
+      "notes": []
+    },
+    {
+      "scenario": "workload::lora",
+      "route": "git_repo",
+      "verdict": "unobservable",
+      "instance_id": "bb495123-aeff-4e12-82f2-e8f64e59ce63",
+      "workload_run_id": null,
+      "started_at_unix": 1785432439.367,
+      "duration_seconds": 32.25,
+      "victim_survived": null,
+      "observations": [
+        {
+          "key": "git_repo.can_submit",
+          "verdict": "pass",
+          "detail": "launched with git_repo workload source",
+          "evidence": {}
+        },
+        {
+          "key": "git_repo.can_report_status",
+          "verdict": "pass",
+          "detail": "Run status 'failed' after 10s.",
+          "evidence": {
+            "status": "failed"
+          }
+        },
+        {
+          "key": "git_repo.can_retrieve_artifact",
+          "verdict": "unobservable",
+          "detail": "No manifest marker found in captured output; results cannot be retrieved through this route.",
+          "evidence": {}
+        },
+        {
+          "key": "git_repo.can_report_exit_code",
+          "verdict": "pass",
+          "detail": "exit_code=127 (field 'exit_code')",
+          "evidence": {}
+        },
+        {
+          "key": "lora.result_is_correct",
+          "verdict": "unobservable",
+          "detail": "No workload manifest recoverable from run output.",
+          "evidence": {}
+        }
+      ],
+      "workload_metrics": null,
+      "notes": []
+    },
+    {
+      "scenario": "workload::whisper",
+      "route": "git_repo",
+      "verdict": "unobservable",
+      "instance_id": "db9c0dd9-269e-48cd-9f4d-be01d20ad6c3",
+      "workload_run_id": null,
+      "started_at_unix": 1785432471.613,
+      "duration_seconds": 178.98,
+      "victim_survived": null,
+      "observations": [
+        {
+          "key": "git_repo.can_submit",
+          "verdict": "pass",
+          "detail": "launched with git_repo workload source",
+          "evidence": {}
+        },
+        {
+          "key": "git_repo.can_report_status",
+          "verdict": "pass",
+          "detail": "Run status 'failed' after 161s.",
+          "evidence": {
+            "status": "failed"
+          }
+        },
+        {
+          "key": "git_repo.can_retrieve_artifact",
+          "verdict": "unobservable",
+          "detail": "No manifest marker found in captured output; results cannot be retrieved through this route.",
+          "evidence": {}
+        },
+        {
+          "key": "git_repo.can_report_exit_code",
+          "verdict": "pass",
+          "detail": "exit_code=127 (field 'exit_code')",
+          "evidence": {}
+        },
+        {
+          "key": "whisper.result_is_correct",
+          "verdict": "unobservable",
+          "detail": "No workload manifest recoverable from run output.",
+          "evidence": {}
+        }
+      ],
+      "workload_metrics": null,
+      "notes": []
+    },
+    {
+      "scenario": "workload::faiss",
+      "route": "git_repo",
+      "verdict": "unobservable",
+      "instance_id": "4e6ab67e-2471-4373-a379-fda96c331fab",
+      "workload_run_id": null,
+      "started_at_unix": 1785432650.593,
+      "duration_seconds": 159.16,
+      "victim_survived": null,
+      "observations": [
+        {
+          "key": "git_repo.can_submit",
+          "verdict": "pass",
+          "detail": "launched with git_repo workload source",
+          "evidence": {}
+        },
+        {
+          "key": "git_repo.can_report_status",
+          "verdict": "pass",
+          "detail": "Run status 'failed' after 140s.",
+          "evidence": {
+            "status": "failed"
+          }
+        },
+        {
+          "key": "git_repo.can_retrieve_artifact",
+          "verdict": "unobservable",
+          "detail": "No manifest marker found in captured output; results cannot be retrieved through this route.",
+          "evidence": {}
+        },
+        {
+          "key": "git_repo.can_report_exit_code",
+          "verdict": "pass",
+          "detail": "exit_code=127 (field 'exit_code')",
+          "evidence": {}
+        },
+        {
+          "key": "faiss.result_is_correct",
+          "verdict": "unobservable",
+          "detail": "No workload manifest recoverable from run output.",
+          "evidence": {}
+        }
+      ],
+      "workload_metrics": null,
+      "notes": []
+    },
+    {
+      "scenario": "cuda_oom",
+      "route": "git_repo",
+      "verdict": "fail",
+      "instance_id": "3f7ee763-86ed-4770-afa1-bc2b80f5fe7b",
+      "workload_run_id": null,
+      "started_at_unix": 1785432809.758,
+      "duration_seconds": 234.66,
+      "victim_survived": null,
+      "observations": [
+        {
+          "key": "run_reaches_terminal_status",
+          "verdict": "pass",
+          "detail": "Run reached terminal status 'failed'.",
+          "evidence": {
+            "status": "failed"
+          }
+        },
+        {
+          "key": "exit_code_surfaced",
+          "verdict": "pass",
+          "detail": "Non-zero exit code 2 recorded (expected 137; a different non-zero code still proves the failure path works).",
+          "evidence": {
+            "exit_code": 2,
+            "expected": 137
+          }
+        },
+        {
+          "key": "failure_reason_is_legible",
+          "verdict": "pass",
+          "detail": "Output names an out-of-memory condition ('OutOfMemory').",
+          "evidence": {
+            "matched": "OutOfMemory"
+          }
+        },
+        {
+          "key": "instance_not_left_nominally_active",
+          "verdict": "fail",
+          "detail": "Instance still RUNNING after its workload died. Spec section 6 explicitly forbids a nominally-active dead sandbox \u2014 this is billing with nothing watching it.",
+          "evidence": {
+            "status": "running"
+          }
+        },
+        {
+          "key": "billing_stopped_on_runtime_failure",
+          "verdict": "fail",
+          "detail": "Instance in 'running' \u2014 no evidence the billable resource was released.",
+          "evidence": {
+            "status": "running"
+          }
+        },
+        {
+          "key": "gpu_reclaimed_for_next_tenant",
+          "verdict": "unobservable",
+          "detail": "Requires launching a fresh instance on the same physical GPU and reading free VRAM at start. The platform exposes no device affinity, so this cannot be asserted through the API \u2014 check manually via the provider console.",
+          "evidence": {}
+        }
+      ],
+      "workload_metrics": null,
+      "notes": []
+    },
+    {
+      "scenario": "host_ram_exhaustion",
+      "route": "git_repo",
+      "verdict": "fail",
+      "instance_id": "165888b4-f78b-4769-b2d5-98c308a2084f",
+      "workload_run_id": null,
+      "started_at_unix": 1785433044.421,
+      "duration_seconds": 293.69,
+      "victim_survived": false,
+      "observations": [
+        {
+          "key": "run_reaches_terminal_status",
+          "verdict": "pass",
+          "detail": "Run reached terminal status 'failed'.",
+          "evidence": {
+            "status": "failed"
+          }
+        },
+        {
+          "key": "killed_at_container_limit",
+          "verdict": "fail",
+          "detail": "Output never mentions a container-level kill (SIGKILL/137/cgroup OOM). A developer reading this cannot self-diagnose; they will open a support ticket.",
+          "evidence": {
+            "tail": "Cloning into 'repo'...\nbash: line 1: python: command not found\n\nScript exited 127: Cloning into 'repo'...\nbash: line 1: python: command not found"
+          }
+        },
+        {
+          "key": "metrics_kept_reporting",
+          "verdict": "fail",
+          "detail": "Only 1 usable ram sample(s) across 1 metric rows \u2014 the metrics path died during the incident it exists to report on.",
+          "evidence": {
+            "rows": 1,
+            "usable": 1
+          }
+        },
+        {
+          "key": "instance_not_left_nominally_active",
+          "verdict": "fail",
+          "detail": "Instance still RUNNING after its workload died. Spec section 6 explicitly forbids a nominally-active dead sandbox \u2014 this is billing with nothing watching it.",
+          "evidence": {
+            "status": "running"
+          }
+        },
+        {
+          "key": "victim_job_survived",
+          "verdict": "fail",
+          "detail": "Concurrent healthy job ended 'failed'. One tenant's fault destroyed another tenant's work; this is an isolation failure, not a workload bug.",
+          "evidence": {
+            "victim_status": "failed",
+            "victim_exit": 127,
+            "tail": "Cloning into 'repo'...\nbash: line 1: python: command not found\n\nScript exited 127: Cloning into 'repo'...\nbash: line 1: python: command not found"
+          }
+        }
+      ],
+      "workload_metrics": null,
+      "notes": []
+    },
+    {
+      "scenario": "hung_network_read",
+      "route": "git_repo",
+      "verdict": "fail",
+      "instance_id": "2b379126-cbe6-4d8d-8594-8f667d6f4801",
+      "workload_run_id": null,
+      "started_at_unix": 1785433338.108,
+      "duration_seconds": 24.05,
+      "victim_survived": null,
+      "observations": [
+        {
+          "key": "run_reaches_terminal_status",
+          "verdict": "pass",
+          "detail": "Run reached terminal status 'failed'.",
+          "evidence": {
+            "status": "failed"
+          }
+        },
+        {
+          "key": "something_eventually_terminates_the_job",
+          "verdict": "pass",
+          "detail": "Run terminated with status 'failed' within the budget.",
+          "evidence": {}
+        },
+        {
+          "key": "termination_reason_is_legible",
+          "verdict": "fail",
+          "detail": "Output never mentions a timeout, runtime limit, or quota stop. A developer reading this cannot self-diagnose; they will open a support ticket.",
+          "evidence": {
+            "tail": "Cloning into 'repo'...\nbash: line 1: python: command not found\n\nScript exited 127: Cloning into 'repo'...\nbash: line 1: python: command not found"
+          }
+        },
+        {
+          "key": "idle_gpu_detected",
+          "verdict": "unobservable",
+          "detail": "No GPU-utilization samples retrievable, so idleness is invisible.",
+          "evidence": {}
+        },
+        {
+          "key": "gate_b_kept_metering",
+          "verdict": "unobservable",
+          "detail": "Gate B's poll cadence is only visible in usage_records and the admin surface; /billing/usage would confirm it but is outside this harness's user-scoped credentials.",
+          "evidence": {}
+        }
+      ],
+      "workload_metrics": null,
+      "notes": []
+    },
+    {
+      "scenario": "kill_at_60_resume_from_checkpoint",
+      "route": "git_repo",
+      "verdict": "error",
+      "instance_id": null,
+      "workload_run_id": null,
+      "started_at_unix": 1785433362.159,
+      "duration_seconds": 0.01,
+      "victim_survived": null,
+      "observations": [
+        {
+          "key": "harness",
+          "verdict": "error",
+          "detail": "platform error: could not launch with volume: launch rejected: POST /sandbox/launch -> 422: {\"detail\":[{\"type\":\"value_error\",\"loc\":[\"body\"],\"msg\":\"Value error, provider must be set explicitly when creating a new volume at launch time\",\"input\":{\"template_id\":\"jupyter\",\"workload_source\":\"git_repo\",\"git_repo_url\":\"https://github.com/nuovoforte/sandbox-conformance.git\",\"git_repo_ref\":\"main\",\"run_command\":\"python -m conformance.workloads.lora run --output-dir /mnt/volume/artifacts --checkpoin",
+          "evidence": {}
+        }
+      ],
+      "workload_metrics": null,
+      "notes": [
+        "first_instance=None",
+        "resumed_instance=None"
+      ]
+    },
+    {
+      "scenario": "disk_exhaustion",
+      "route": "git_repo",
+      "verdict": "fail",
+      "instance_id": "16c35157-92e9-40bd-9193-a8f00dd9f90e",
+      "workload_run_id": null,
+      "started_at_unix": 1785433362.173,
+      "duration_seconds": 68.08,
+      "victim_survived": false,
+      "observations": [
+        {
+          "key": "run_reaches_terminal_status",
+          "verdict": "pass",
+          "detail": "Run reached terminal status 'failed'.",
+          "evidence": {
+            "status": "failed"
+          }
+        },
+        {
+          "key": "exit_code_surfaced",
+          "verdict": "pass",
+          "detail": "Non-zero exit code 127 recorded (expected 28; a different non-zero code still proves the failure path works).",
+          "evidence": {
+            "exit_code": 127,
+            "expected": 28
+          }
+        },
+        {
+          "key": "enospc_error_is_legible",
+          "verdict": "fail",
+          "detail": "Output never mentions a full disk / ENOSPC. A developer reading this cannot self-diagnose; they will open a support ticket.",
+          "evidence": {
+            "tail": "Cloning into 'repo'...\nbash: line 1: python: command not found\n\nScript exited 127: Cloning into 'repo'...\nbash: line 1: python: command not found"
+          }
+        },
+        {
+          "key": "platform_retained_ssh_observability",
+          "verdict": "pass",
+          "detail": "Metrics snapshot still served during the fault, so the SSH control path held.",
+          "evidence": {
+            "fields": [
+              "collected_at",
+              "cpu_load_pct",
+              "disk_total_gb",
+              "disk_used_gb",
+              "gpu_stats",
+              "gpu_utilization_pct_avg",
+              "id",
+              "ram_total_mb",
+              "ram_used_mb",
+              "sandbox_instance_id"
+            ]
+          }
+        },
+        {
+          "key": "disk_metrics_showed_the_ramp",
+          "verdict": "unobservable",
+          "detail": "Fewer than two rows carried both disk_used_gb and disk_total_gb.",
+          "evidence": {
+            "rows": 1
+          }
+        },
+        {
+          "key": "terminate_still_works",
+          "verdict": "pass",
+          "detail": "Instance terminated in 0s despite the fault.",
+          "evidence": {
+            "final_status": "terminated",
+            "seconds": 0.0
+          }
+        },
+        {
+          "key": "volume_reclaimed_on_teardown",
+          "verdict": "unobservable",
+          "detail": "Provider-side storage reclamation is not visible through the platform API. Verify against the provider account directly.",
+          "evidence": {}
+        },
+        {
+          "key": "victim_job_survived",
+          "verdict": "fail",
+          "detail": "Concurrent healthy job ended 'failed'. One tenant's fault destroyed another tenant's work; this is an isolation failure, not a workload bug.",
+          "evidence": {
+            "victim_status": "failed",
+            "victim_exit": 127,
+            "tail": "Cloning into 'repo'...\nbash: line 1: python: command not found\n\nScript exited 127: Cloning into 'repo'...\nbash: line 1: python: command not found"
+          }
+        }
+      ],
+      "workload_metrics": null,
+      "notes": []
+    }
+  ]
+}
