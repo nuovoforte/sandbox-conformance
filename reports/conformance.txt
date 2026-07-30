@@ -1,0 +1,19 @@
+AI Sandbox conformance report
+platform: http://127.0.0.1:8600
+duration: 0s
+
+skipped=13
+
+[     SKIPPED] route_canary::git_repo
+[     SKIPPED] route_canary::rest_api
+[     SKIPPED] route_canary::notebook
+[     SKIPPED] route_canary::cli
+[     SKIPPED] route_canary::sdk
+[     SKIPPED] workload::lora
+[     SKIPPED] workload::whisper
+[     SKIPPED] workload::faiss
+[     SKIPPED] adversarial::cuda_oom
+[     SKIPPED] adversarial::host_ram_exhaustion
+[     SKIPPED] adversarial::hung_network_read
+[     SKIPPED] adversarial::kill_at_60_resume_from_checkpoint
+[     SKIPPED] adversarial::disk_exhaustion

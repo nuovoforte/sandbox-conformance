@@ -1,0 +1,55 @@
+AI Sandbox conformance report
+platform: http://127.0.0.1:8600
+duration: 3284s
+
+fail=4  unobservable=5  error=4
+
+[UNOBSERVABLE] route_canary::git_repo
+    unobservable  git_repo.can_report_status: No run status retrievable after 903s via this route.
+    unobservable  git_repo.can_retrieve_artifact: No manifest marker found in captured output; results cannot be retrieved through this route.
+    unobservable  git_repo.can_report_exit_code: exit_code=None (field None)
+    unobservable  interactive_jupyter_is_observable: A Jupyter endpoint is advertised, but work done in an interactive session creates no workload_runs row, no exit code, and no audit event. Anything a developer runs there is invisible to the platform — untracked, undebuggable, and outside the failure-detection path spec section 6 promises.
+[        FAIL] route_canary::rest_api
+            fail  rest_api.can_submit: attach-workload rejected: POST /sandbox/instances/8f9b1bd1-9f35-4373-a4ff-f21e89b4945b/workload-run -> 422: {"detail":[{"type":"missing","loc":["body","workload_source"],"msg":"Field required","input":{"run_command":"python -m conformance.workloads.lora run --canary"}}]}
+    unobservable  interactive_jupyter_is_observable: A Jupyter endpoint is advertised, but work done in an interactive session creates no workload_runs row, no exit code, and no audit event. Anything a developer runs there is invisible to the platform — untracked, undebuggable, and outside the failure-detection path spec section 6 promises.
+[UNOBSERVABLE] route_canary::notebook
+    unobservable  notebook.can_retrieve_artifact: No manifest marker found in captured output; results cannot be retrieved through this route.
+    unobservable  notebook.can_report_exit_code: exit_code=None (field 'exit_code')
+    unobservable  interactive_jupyter_is_observable: A Jupyter endpoint is advertised, but work done in an interactive session creates no workload_runs row, no exit code, and no audit event. Anything a developer runs there is invisible to the platform — untracked, undebuggable, and outside the failure-detection path spec section 6 promises.
+[        FAIL] route_canary::cli
+            fail  cli.can_submit: 'ai-sandbox' not on PATH; install the platform CLI
+[        FAIL] route_canary::sdk
+            fail  sdk.can_submit: platform SDK (`ai_sandbox`) not importable
+[UNOBSERVABLE] workload::lora
+    unobservable  git_repo.can_retrieve_artifact: No manifest marker found in captured output; results cannot be retrieved through this route.
+    unobservable  git_repo.can_report_exit_code: exit_code=None (field 'exit_code')
+    unobservable  lora.result_is_correct: No workload manifest recoverable from run output.
+[UNOBSERVABLE] workload::whisper
+    unobservable  git_repo.can_retrieve_artifact: No manifest marker found in captured output; results cannot be retrieved through this route.
+    unobservable  git_repo.can_report_exit_code: exit_code=None (field 'exit_code')
+    unobservable  whisper.result_is_correct: No workload manifest recoverable from run output.
+[UNOBSERVABLE] workload::faiss
+    unobservable  git_repo.can_retrieve_artifact: No manifest marker found in captured output; results cannot be retrieved through this route.
+    unobservable  git_repo.can_report_exit_code: exit_code=None (field 'exit_code')
+    unobservable  faiss.result_is_correct: No workload manifest recoverable from run output.
+[        FAIL] cuda_oom
+            fail  exit_code_surfaced: Field 'exit_code' is present but null on a finished run — the platform recorded no exit code for a process that definitely exited.
+            fail  failure_reason_is_legible: Output never mentions an out-of-memory condition. A developer reading this cannot self-diagnose; they will open a support ticket.
+            fail  instance_not_left_nominally_active: Instance still RUNNING after its workload died. Spec section 6 explicitly forbids a nominally-active dead sandbox — this is billing with nothing watching it.
+            fail  billing_stopped_on_runtime_failure: Instance in 'running' — no evidence the billable resource was released.
+    unobservable  gpu_reclaimed_for_next_tenant: Requires launching a fresh instance on the same physical GPU and reading free VRAM at start. The platform exposes no device affinity, so this cannot be asserted through the API — check manually via the provider console.
+[       ERROR] host_ram_exhaustion
+           error  harness: platform error: GET /sandbox/instances/909390b8-2bd2-497b-8d35-a185e6f145dc/workload-runs -> 401: {"detail":"Invalid or expired token"}
+[       ERROR] hung_network_read
+           error  launch: could not launch: launch rejected: POST /sandbox/launch -> 401: {"detail":"Invalid or expired token"}
+[       ERROR] kill_at_60_resume_from_checkpoint
+           error  harness: platform error: could not launch with volume: launch rejected: POST /sandbox/launch -> 401: {"detail":"Invalid or expired token"}
+[       ERROR] disk_exhaustion
+           error  launch: could not launch: launch rejected: POST /sandbox/launch -> 401: {"detail":"Invalid or expired token"}
+
+Questions this platform cannot currently answer about itself:
+  - route_canary::git_repo
+  - route_canary::notebook
+  - workload::lora
+  - workload::whisper
+  - workload::faiss

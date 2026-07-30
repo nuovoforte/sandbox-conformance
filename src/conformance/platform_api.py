@@ -122,6 +122,13 @@ class PlatformClient:
         self.base_url = base_url.rstrip("/")
         self._client = httpx.Client(base_url=self.base_url, timeout=timeout)
         self._token = token
+        # Kept so an expired access token mid-run can be replaced. The first
+        # live pass (2026-07-30) ran ~55 minutes, the platform's access-token
+        # TTL is shorter, and every scenario after expiry died with 401 —
+        # including the orchestrator's own cleanup, which leaked two billable
+        # pods. A conformance run must outlive one token.
+        self._email = email
+        self._password = password
         if token is None and email and password:
             self.login(email, password)
 
@@ -144,6 +151,15 @@ class PlatformClient:
             resp = self._client.request(method, path, headers=self._headers(), **kwargs)
         except httpx.HTTPError as exc:
             raise PlatformError(f"{method} {path} transport failure: {exc}") from exc
+        if resp.status_code == 401 and self._email and self._password and path != EP_LOGIN:
+            # Access token expired mid-run — re-login once and retry. Without
+            # this, a matrix longer than one token TTL loses every remaining
+            # scenario AND the cleanup pass (observed live 2026-07-30).
+            self.login(self._email, self._password)
+            try:
+                resp = self._client.request(method, path, headers=self._headers(), **kwargs)
+            except httpx.HTTPError as exc:
+                raise PlatformError(f"{method} {path} transport failure: {exc}") from exc
         if resp.status_code >= 400:
             raise PlatformError(f"{method} {path} -> {resp.status_code}: {resp.text[:400]}")
         if not resp.content:
@@ -225,8 +241,14 @@ class PlatformClient:
         run_command: str | None = None,
         notebook_upload_id: str | None = None,
     ) -> Any:
-        """Attach a first workload to an already-running instance (spec 28)."""
+        """Attach a first workload to an already-running instance (spec 28).
+
+        `workload_source` is required by the endpoint (422 without it — found
+        on the first live pass); derive it from which arguments were given
+        rather than asking every caller to know the wire contract."""
+        source = "notebook" if notebook_upload_id else "git_repo"
         body = {
+            "workload_source": source,
             "git_repo_url": git_repo_url,
             "git_repo_ref": git_repo_ref,
             "run_command": run_command,

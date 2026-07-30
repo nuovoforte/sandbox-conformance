@@ -118,7 +118,13 @@ class RouteRunner:
                 f"instance never reached running ({state})",
             )
         try:
-            run = self.client.attach_workload(instance_id, run_command=run_command)
+            # workload_source=git_repo requires the repo URL too — attaching a
+            # bare command is not a shape the endpoint accepts (422, found on
+            # the first live pass). The canary clones this repo like every
+            # other git_repo submission.
+            run = self.client.attach_workload(
+                instance_id, git_repo_url=self.repo_url, run_command=run_command
+            )
         except PlatformError as exc:
             return RouteLaunch(
                 Route.REST_API, instance_id, None, False, f"attach-workload rejected: {exc}"

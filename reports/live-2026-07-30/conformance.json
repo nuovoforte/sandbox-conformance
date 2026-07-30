@@ -1,0 +1,513 @@
+{
+  "platform_base_url": "http://127.0.0.1:8600",
+  "started_at_unix": 1785428082.129,
+  "duration_seconds": 3283.72,
+  "counts": {
+    "pass": 0,
+    "fail": 4,
+    "unobservable": 5,
+    "skipped": 0,
+    "error": 4
+  },
+  "skipped": [],
+  "results": [
+    {
+      "scenario": "route_canary::git_repo",
+      "route": "git_repo",
+      "verdict": "unobservable",
+      "instance_id": "1f0d8ebc-72ef-4436-b14e-4962f45124d4",
+      "workload_run_id": null,
+      "started_at_unix": 1785428082.129,
+      "duration_seconds": 1078.54,
+      "victim_survived": null,
+      "observations": [
+        {
+          "key": "git_repo.can_submit",
+          "verdict": "pass",
+          "detail": "launched with git_repo workload source",
+          "evidence": {}
+        },
+        {
+          "key": "git_repo.can_report_status",
+          "verdict": "unobservable",
+          "detail": "No run status retrievable after 903s via this route.",
+          "evidence": {}
+        },
+        {
+          "key": "git_repo.can_retrieve_artifact",
+          "verdict": "unobservable",
+          "detail": "No manifest marker found in captured output; results cannot be retrieved through this route.",
+          "evidence": {}
+        },
+        {
+          "key": "git_repo.can_report_exit_code",
+          "verdict": "unobservable",
+          "detail": "exit_code=None (field None)",
+          "evidence": {}
+        },
+        {
+          "key": "interactive_jupyter_is_observable",
+          "verdict": "unobservable",
+          "detail": "A Jupyter endpoint is advertised, but work done in an interactive session creates no workload_runs row, no exit code, and no audit event. Anything a developer runs there is invisible to the platform \u2014 untracked, undebuggable, and outside the failure-detection path spec section 6 promises.",
+          "evidence": {
+            "runs_visible": 0,
+            "checked_at": 1785429160.058
+          }
+        }
+      ],
+      "workload_metrics": null,
+      "notes": []
+    },
+    {
+      "scenario": "route_canary::rest_api",
+      "route": "rest_api",
+      "verdict": "fail",
+      "instance_id": "8f9b1bd1-9f35-4373-a4ff-f21e89b4945b",
+      "workload_run_id": null,
+      "started_at_unix": 1785429160.665,
+      "duration_seconds": 771.37,
+      "victim_survived": null,
+      "observations": [
+        {
+          "key": "rest_api.can_submit",
+          "verdict": "fail",
+          "detail": "attach-workload rejected: POST /sandbox/instances/8f9b1bd1-9f35-4373-a4ff-f21e89b4945b/workload-run -> 422: {\"detail\":[{\"type\":\"missing\",\"loc\":[\"body\",\"workload_source\"],\"msg\":\"Field required\",\"input\":{\"run_command\":\"python -m conformance.workloads.lora run --canary\"}}]}",
+          "evidence": {}
+        },
+        {
+          "key": "rest_api.can_report_status",
+          "verdict": "skipped",
+          "detail": "submission did not succeed",
+          "evidence": {}
+        },
+        {
+          "key": "rest_api.can_retrieve_artifact",
+          "verdict": "skipped",
+          "detail": "submission did not succeed",
+          "evidence": {}
+        },
+        {
+          "key": "rest_api.can_report_exit_code",
+          "verdict": "skipped",
+          "detail": "submission did not succeed",
+          "evidence": {}
+        },
+        {
+          "key": "interactive_jupyter_is_observable",
+          "verdict": "unobservable",
+          "detail": "A Jupyter endpoint is advertised, but work done in an interactive session creates no workload_runs row, no exit code, and no audit event. Anything a developer runs there is invisible to the platform \u2014 untracked, undebuggable, and outside the failure-detection path spec section 6 promises.",
+          "evidence": {
+            "runs_visible": 0,
+            "checked_at": 1785429931.288
+          }
+        }
+      ],
+      "workload_metrics": null,
+      "notes": []
+    },
+    {
+      "scenario": "route_canary::notebook",
+      "route": "notebook",
+      "verdict": "unobservable",
+      "instance_id": "84d4a0e1-5c41-4b66-b652-add500fa5adb",
+      "workload_run_id": null,
+      "started_at_unix": 1785429932.03,
+      "duration_seconds": 75.17,
+      "victim_survived": null,
+      "observations": [
+        {
+          "key": "notebook.can_submit",
+          "verdict": "pass",
+          "detail": "launched via papermill notebook",
+          "evidence": {}
+        },
+        {
+          "key": "notebook.can_report_status",
+          "verdict": "pass",
+          "detail": "Run status 'failed' after 50s.",
+          "evidence": {
+            "status": "failed"
+          }
+        },
+        {
+          "key": "notebook.can_retrieve_artifact",
+          "verdict": "unobservable",
+          "detail": "No manifest marker found in captured output; results cannot be retrieved through this route.",
+          "evidence": {}
+        },
+        {
+          "key": "notebook.can_report_exit_code",
+          "verdict": "unobservable",
+          "detail": "exit_code=None (field 'exit_code')",
+          "evidence": {}
+        },
+        {
+          "key": "interactive_jupyter_is_observable",
+          "verdict": "unobservable",
+          "detail": "A Jupyter endpoint is advertised, but work done in an interactive session creates no workload_runs row, no exit code, and no audit event. Anything a developer runs there is invisible to the platform \u2014 untracked, undebuggable, and outside the failure-detection path spec section 6 promises.",
+          "evidence": {
+            "runs_visible": 1,
+            "checked_at": 1785430006.446
+          }
+        }
+      ],
+      "workload_metrics": null,
+      "notes": []
+    },
+    {
+      "scenario": "route_canary::cli",
+      "route": "cli",
+      "verdict": "fail",
+      "instance_id": null,
+      "workload_run_id": null,
+      "started_at_unix": 1785430007.203,
+      "duration_seconds": 0.01,
+      "victim_survived": null,
+      "observations": [
+        {
+          "key": "cli.can_submit",
+          "verdict": "fail",
+          "detail": "'ai-sandbox' not on PATH; install the platform CLI",
+          "evidence": {}
+        },
+        {
+          "key": "cli.can_report_status",
+          "verdict": "skipped",
+          "detail": "submission did not succeed",
+          "evidence": {}
+        },
+        {
+          "key": "cli.can_retrieve_artifact",
+          "verdict": "skipped",
+          "detail": "submission did not succeed",
+          "evidence": {}
+        },
+        {
+          "key": "cli.can_report_exit_code",
+          "verdict": "skipped",
+          "detail": "submission did not succeed",
+          "evidence": {}
+        }
+      ],
+      "workload_metrics": null,
+      "notes": []
+    },
+    {
+      "scenario": "route_canary::sdk",
+      "route": "sdk",
+      "verdict": "fail",
+      "instance_id": null,
+      "workload_run_id": null,
+      "started_at_unix": 1785430007.212,
+      "duration_seconds": 0.0,
+      "victim_survived": null,
+      "observations": [
+        {
+          "key": "sdk.can_submit",
+          "verdict": "fail",
+          "detail": "platform SDK (`ai_sandbox`) not importable",
+          "evidence": {}
+        },
+        {
+          "key": "sdk.can_report_status",
+          "verdict": "skipped",
+          "detail": "submission did not succeed",
+          "evidence": {}
+        },
+        {
+          "key": "sdk.can_retrieve_artifact",
+          "verdict": "skipped",
+          "detail": "submission did not succeed",
+          "evidence": {}
+        },
+        {
+          "key": "sdk.can_report_exit_code",
+          "verdict": "skipped",
+          "detail": "submission did not succeed",
+          "evidence": {}
+        }
+      ],
+      "workload_metrics": null,
+      "notes": []
+    },
+    {
+      "scenario": "workload::lora",
+      "route": "git_repo",
+      "verdict": "unobservable",
+      "instance_id": "2aa46614-4953-4643-853a-b0124d1540de",
+      "workload_run_id": null,
+      "started_at_unix": 1785430007.212,
+      "duration_seconds": 757.73,
+      "victim_survived": null,
+      "observations": [
+        {
+          "key": "git_repo.can_submit",
+          "verdict": "pass",
+          "detail": "launched with git_repo workload source",
+          "evidence": {}
+        },
+        {
+          "key": "git_repo.can_report_status",
+          "verdict": "pass",
+          "detail": "Run status 'failed' after 733s.",
+          "evidence": {
+            "status": "failed"
+          }
+        },
+        {
+          "key": "git_repo.can_retrieve_artifact",
+          "verdict": "unobservable",
+          "detail": "No manifest marker found in captured output; results cannot be retrieved through this route.",
+          "evidence": {}
+        },
+        {
+          "key": "git_repo.can_report_exit_code",
+          "verdict": "unobservable",
+          "detail": "exit_code=None (field 'exit_code')",
+          "evidence": {}
+        },
+        {
+          "key": "lora.result_is_correct",
+          "verdict": "unobservable",
+          "detail": "No workload manifest recoverable from run output.",
+          "evidence": {}
+        }
+      ],
+      "workload_metrics": null,
+      "notes": []
+    },
+    {
+      "scenario": "workload::whisper",
+      "route": "git_repo",
+      "verdict": "unobservable",
+      "instance_id": "b3848af3-1224-4f55-9cae-4ccab22903a0",
+      "workload_run_id": null,
+      "started_at_unix": 1785430764.938,
+      "duration_seconds": 161.47,
+      "victim_survived": null,
+      "observations": [
+        {
+          "key": "git_repo.can_submit",
+          "verdict": "pass",
+          "detail": "launched with git_repo workload source",
+          "evidence": {}
+        },
+        {
+          "key": "git_repo.can_report_status",
+          "verdict": "pass",
+          "detail": "Run status 'failed' after 140s.",
+          "evidence": {
+            "status": "failed"
+          }
+        },
+        {
+          "key": "git_repo.can_retrieve_artifact",
+          "verdict": "unobservable",
+          "detail": "No manifest marker found in captured output; results cannot be retrieved through this route.",
+          "evidence": {}
+        },
+        {
+          "key": "git_repo.can_report_exit_code",
+          "verdict": "unobservable",
+          "detail": "exit_code=None (field 'exit_code')",
+          "evidence": {}
+        },
+        {
+          "key": "whisper.result_is_correct",
+          "verdict": "unobservable",
+          "detail": "No workload manifest recoverable from run output.",
+          "evidence": {}
+        }
+      ],
+      "workload_metrics": null,
+      "notes": []
+    },
+    {
+      "scenario": "workload::faiss",
+      "route": "git_repo",
+      "verdict": "unobservable",
+      "instance_id": "a0bc085a-ab0a-4df9-a5d5-5e5d2b23027b",
+      "workload_run_id": null,
+      "started_at_unix": 1785430926.405,
+      "duration_seconds": 103.32,
+      "victim_survived": null,
+      "observations": [
+        {
+          "key": "git_repo.can_submit",
+          "verdict": "pass",
+          "detail": "launched with git_repo workload source",
+          "evidence": {}
+        },
+        {
+          "key": "git_repo.can_report_status",
+          "verdict": "pass",
+          "detail": "Run status 'failed' after 80s.",
+          "evidence": {
+            "status": "failed"
+          }
+        },
+        {
+          "key": "git_repo.can_retrieve_artifact",
+          "verdict": "unobservable",
+          "detail": "No manifest marker found in captured output; results cannot be retrieved through this route.",
+          "evidence": {}
+        },
+        {
+          "key": "git_repo.can_report_exit_code",
+          "verdict": "unobservable",
+          "detail": "exit_code=None (field 'exit_code')",
+          "evidence": {}
+        },
+        {
+          "key": "faiss.result_is_correct",
+          "verdict": "unobservable",
+          "detail": "No workload manifest recoverable from run output.",
+          "evidence": {}
+        }
+      ],
+      "workload_metrics": null,
+      "notes": []
+    },
+    {
+      "scenario": "cuda_oom",
+      "route": "git_repo",
+      "verdict": "fail",
+      "instance_id": "781bf79a-e0c3-4633-b403-ca6aa7a266e6",
+      "workload_run_id": null,
+      "started_at_unix": 1785431029.721,
+      "duration_seconds": 363.21,
+      "victim_survived": null,
+      "observations": [
+        {
+          "key": "run_reaches_terminal_status",
+          "verdict": "pass",
+          "detail": "Run reached terminal status 'failed'.",
+          "evidence": {
+            "status": "failed"
+          }
+        },
+        {
+          "key": "exit_code_surfaced",
+          "verdict": "fail",
+          "detail": "Field 'exit_code' is present but null on a finished run \u2014 the platform recorded no exit code for a process that definitely exited.",
+          "evidence": {}
+        },
+        {
+          "key": "failure_reason_is_legible",
+          "verdict": "fail",
+          "detail": "Output never mentions an out-of-memory condition. A developer reading this cannot self-diagnose; they will open a support ticket.",
+          "evidence": {
+            "tail": "Unexpected error: [Errno None] Unable to connect to port 30066 on 213.173.105.4"
+          }
+        },
+        {
+          "key": "instance_not_left_nominally_active",
+          "verdict": "fail",
+          "detail": "Instance still RUNNING after its workload died. Spec section 6 explicitly forbids a nominally-active dead sandbox \u2014 this is billing with nothing watching it.",
+          "evidence": {
+            "status": "running"
+          }
+        },
+        {
+          "key": "billing_stopped_on_runtime_failure",
+          "verdict": "fail",
+          "detail": "Instance in 'running' \u2014 no evidence the billable resource was released.",
+          "evidence": {
+            "status": "running"
+          }
+        },
+        {
+          "key": "gpu_reclaimed_for_next_tenant",
+          "verdict": "unobservable",
+          "detail": "Requires launching a fresh instance on the same physical GPU and reading free VRAM at start. The platform exposes no device affinity, so this cannot be asserted through the API \u2014 check manually via the provider console.",
+          "evidence": {}
+        }
+      ],
+      "workload_metrics": null,
+      "notes": []
+    },
+    {
+      "scenario": "host_ram_exhaustion",
+      "route": "git_repo",
+      "verdict": "error",
+      "instance_id": "909390b8-2bd2-497b-8d35-a185e6f145dc",
+      "workload_run_id": null,
+      "started_at_unix": 1785431392.932,
+      "duration_seconds": 292.63,
+      "victim_survived": null,
+      "observations": [
+        {
+          "key": "harness",
+          "verdict": "error",
+          "detail": "platform error: GET /sandbox/instances/909390b8-2bd2-497b-8d35-a185e6f145dc/workload-runs -> 401: {\"detail\":\"Invalid or expired token\"}",
+          "evidence": {}
+        }
+      ],
+      "workload_metrics": null,
+      "notes": []
+    },
+    {
+      "scenario": "hung_network_read",
+      "route": "git_repo",
+      "verdict": "error",
+      "instance_id": null,
+      "workload_run_id": null,
+      "started_at_unix": 1785431685.565,
+      "duration_seconds": 0.01,
+      "victim_survived": null,
+      "observations": [
+        {
+          "key": "launch",
+          "verdict": "error",
+          "detail": "could not launch: launch rejected: POST /sandbox/launch -> 401: {\"detail\":\"Invalid or expired token\"}",
+          "evidence": {}
+        }
+      ],
+      "workload_metrics": null,
+      "notes": []
+    },
+    {
+      "scenario": "kill_at_60_resume_from_checkpoint",
+      "route": "git_repo",
+      "verdict": "error",
+      "instance_id": null,
+      "workload_run_id": null,
+      "started_at_unix": 1785431685.573,
+      "duration_seconds": 0.0,
+      "victim_survived": null,
+      "observations": [
+        {
+          "key": "harness",
+          "verdict": "error",
+          "detail": "platform error: could not launch with volume: launch rejected: POST /sandbox/launch -> 401: {\"detail\":\"Invalid or expired token\"}",
+          "evidence": {}
+        }
+      ],
+      "workload_metrics": null,
+      "notes": [
+        "first_instance=None",
+        "resumed_instance=None"
+      ]
+    },
+    {
+      "scenario": "disk_exhaustion",
+      "route": "git_repo",
+      "verdict": "error",
+      "instance_id": null,
+      "workload_run_id": null,
+      "started_at_unix": 1785431685.576,
+      "duration_seconds": 0.01,
+      "victim_survived": null,
+      "observations": [
+        {
+          "key": "launch",
+          "verdict": "error",
+          "detail": "could not launch: launch rejected: POST /sandbox/launch -> 401: {\"detail\":\"Invalid or expired token\"}",
+          "evidence": {}
+        }
+      ],
+      "workload_metrics": null,
+      "notes": []
+    }
+  ]
+}
