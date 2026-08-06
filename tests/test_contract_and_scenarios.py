@@ -74,6 +74,54 @@ def test_scenario_commands_are_non_empty() -> None:
         assert scenario.run_command.strip()
 
 
+def test_scenario_commands_actually_execute_through_a_real_shell() -> None:
+    """Regression test for a real bug found live 2026-08-06: cuda_oom,
+    host_ram_exhaustion, disk_exhaustion, and hung_network_read all built
+    their run_command with f"python -c {CAUSE_SCRIPT!r}" -- repr() renders
+    embedded newlines as the literal two characters backslash+n, not a real
+    newline byte, so inside the shell's single quotes `python -c` received
+    one "line" containing literal \\n text: an immediate SyntaxError, before
+    any of the scenario's own fault-injection logic ever ran. Every
+    adversarial "evidence" observed in every live run before this fix was
+    actually that SyntaxError's own one-line source dump, which happened to
+    contain matching substrings from the script's own text (e.g.
+    "OutOfMemoryError" as a Python identifier), not real execution.
+    cause() alone can't catch this: it exec()s the script in-process,
+    bypassing the shell round-trip entirely. This test shells out for
+    real."""
+    import shutil
+    import subprocess
+
+    # The sandbox container guarantees `python`; this dev/CI machine may not
+    # (only `python3` here) -- swap the interpreter name only, so the test
+    # still exercises the real thing at risk: the shell-quoting of the
+    # script body, not which binary happens to be on this machine's PATH.
+    local_python = "python" if shutil.which("python") else "python3"
+
+    for scenario in ALL_SCENARIOS:
+        if not scenario.run_command.startswith("python -c "):
+            continue  # only this shell-quoting shape is at risk here
+        command = local_python + scenario.run_command[len("python"):]
+        # Real fault-injection scripts loop/hang forever by design once they
+        # actually start running -- that's the EXPECTED, correct outcome
+        # here (proof the syntax was fine and real code started executing).
+        # A broken quoting round-trip fails near-instantly with a
+        # SyntaxError instead, well under this timeout.
+        try:
+            result = subprocess.run(["bash", "-c", command], timeout=2, capture_output=True, text=True)
+        except subprocess.TimeoutExpired:
+            continue  # ran real code long enough to hang -- correct
+        combined = ((result.stdout or "") + (result.stderr or "")).lower()
+        # Two distinct failure shapes seen live from the same repr()-newline
+        # bug depending on the script's own content: a clean Python
+        # SyntaxError for simple scripts, or -- when the script's escaped
+        # content confuses bash's own quoting -- a bash-level parse error
+        # before python even starts. Both mean zero real code ran.
+        assert "syntax error" not in combined and "line continuation" not in combined, (
+            f"{scenario.name}: run_command failed to parse -- got: {combined[:300]}"
+        )
+
+
 def test_unknown_expectation_key_raises() -> None:
     with pytest.raises(KeyError):
         BY_NAME["cuda_oom"].expectation("nope")

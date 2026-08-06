@@ -14,6 +14,7 @@ billing, and leaves the GPU clean for the next tenant.
 
 from __future__ import annotations
 
+import shlex
 import sys
 
 from ..contract import Expectation
@@ -67,7 +68,18 @@ def cause() -> int:
 SCENARIO = Scenario(
     name="cuda_oom",
     summary="Allocate GPU memory until the CUDA allocator refuses",
-    run_command=f"python -c {CAUSE_SCRIPT!r}",
+    # NOT !r: repr() renders embedded newlines as the two literal characters
+    # backslash+n, not a real newline byte. Inside single shell quotes those
+    # pass through unexpanded, so `python -c` receives one "line" containing
+    # literal \n sequences -- a SyntaxError before any of this script's own
+    # code runs. shlex.quote() wraps in real single quotes without touching
+    # embedded newlines, so the interpreter sees the actual multi-line
+    # source. Found live 2026-08-06: every adversarial run's "OOM"/"kill"
+    # evidence was actually this SyntaxError's own one-line source dump,
+    # which happened to contain matching substrings from the script's own
+    # text (e.g. "OutOfMemoryError" as a Python identifier) -- never real
+    # execution.
+    run_command=f"python -c {shlex.quote(CAUSE_SCRIPT)}",
     needs_gpu=True,
     needs_victim=False,
     expected_max_seconds=900.0,

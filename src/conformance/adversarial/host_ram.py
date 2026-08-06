@@ -22,6 +22,7 @@ supposed to be reporting on.
 
 from __future__ import annotations
 
+import shlex
 import sys
 
 from ..contract import Expectation
@@ -81,7 +82,11 @@ def cause() -> int:
 SCENARIO = Scenario(
     name="host_ram_exhaustion",
     summary="Allocate host RAM without bound until something kills the process",
-    run_command=f"python -c {CAUSE_SCRIPT!r}",
+    # NOT !r -- see cuda_oom.py's comment: repr() turns embedded newlines
+    # into literal backslash-n text, which is a SyntaxError under `python -c`
+    # before any of this script's own logic runs. shlex.quote() preserves
+    # real newlines.
+    run_command=f"python -c {shlex.quote(CAUSE_SCRIPT)}",
     needs_gpu=False,
     needs_victim=True,
     expected_max_seconds=1200.0,

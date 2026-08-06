@@ -23,6 +23,7 @@ spec claims it.
 
 from __future__ import annotations
 
+import shlex
 import sys
 
 from ..contract import Expectation
@@ -67,7 +68,11 @@ def cause() -> int:
 SCENARIO = Scenario(
     name="hung_network_read",
     summary="Block forever on a read from an unrouteable address",
-    run_command=f"python -c {CAUSE_SCRIPT!r}",
+    # NOT !r -- see cuda_oom.py's comment: repr() turns embedded newlines
+    # into literal backslash-n text, which is a SyntaxError under `python -c`
+    # before any of this script's own logic runs. shlex.quote() preserves
+    # real newlines.
+    run_command=f"python -c {shlex.quote(CAUSE_SCRIPT)}",
     needs_gpu=True,
     needs_victim=False,
     # Long by design: the whole question is whether anything ever fires. The
