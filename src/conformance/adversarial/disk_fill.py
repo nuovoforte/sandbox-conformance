@@ -22,6 +22,7 @@ report the test as passing when nothing was ever filled.
 
 from __future__ import annotations
 
+import shlex
 import sys
 
 from ..contract import Expectation
@@ -82,7 +83,11 @@ def cause() -> int:
 SCENARIO = Scenario(
     name="disk_exhaustion",
     summary="Write incompressible data until the filesystem returns ENOSPC",
-    run_command=f"python -c {CAUSE_SCRIPT!r}",
+    # NOT !r -- see cuda_oom.py's comment: repr() turns embedded newlines
+    # into literal backslash-n text, which is a SyntaxError under `python -c`
+    # before any of this script's own logic runs. shlex.quote() preserves
+    # real newlines.
+    run_command=f"python -c {shlex.quote(CAUSE_SCRIPT)}",
     needs_gpu=False,
     needs_victim=True,
     expected_max_seconds=1800.0,
