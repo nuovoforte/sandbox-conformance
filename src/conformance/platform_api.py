@@ -181,7 +181,17 @@ class PlatformClient:
     # --- lifecycle ---------------------------------------------------------
 
     def healthz(self) -> Any:
-        return self.request("GET", EP_HEALTHZ)
+        # /healthz deliberately stays bare (OI-51) while every other route
+        # moved under /v1 -- self.base_url already carries that /v1 suffix
+        # (needed for every other endpoint below), so a plain
+        # self.request("GET", EP_HEALTHZ) 404s against .../v1/healthz.
+        # Hits the origin directly instead, bypassing self._client's
+        # /v1-prefixed base_url for this one endpoint only.
+        origin = httpx.URL(self.base_url).copy_with(path="", query=None, fragment=None)
+        resp = httpx.get(f"{origin}{EP_HEALTHZ}", timeout=self._client.timeout)
+        if resp.status_code >= 400:
+            raise PlatformError(f"GET {EP_HEALTHZ} -> {resp.status_code}: {resp.text[:400]}")
+        return resp.json() if resp.content else None
 
     def templates(self) -> Any:
         return self.request("GET", EP_TEMPLATES)
