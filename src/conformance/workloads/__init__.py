@@ -13,11 +13,20 @@ WORKLOAD_MODULES = {
 }
 
 
-# Command each route uses to invoke a workload inside the sandbox.
+# Command each route uses to invoke a workload inside the sandbox. The
+# cloned checkout at the sandbox's cwd IS this repo, but `conformance` is
+# never installed into it — every prior git_repo-routed workload run 404'd
+# with "ModuleNotFoundError: No module named 'conformance'" before a single
+# line of workload code ran (surfaced live 2026-08-06: this is also why the
+# host_ram_exhaustion/disk_exhaustion adversarial scenarios' "victim" job
+# always died, misread as a cross-tenant isolation failure when it was this
+# bug). pyproject.toml's own `workloads` extra says as much ("Installed
+# INSIDE the sandbox, by the workload itself") — this just never happened.
 def run_command(workload: str, *, canary: bool = False, extra: str = "") -> str:
     module = WORKLOAD_MODULES[workload]
     flag = " --canary" if canary else ""
-    return f"python -m {module} run{flag} {extra}".strip()
+    install = 'pip install -q ".[workloads]"'
+    return f"{install} && python -m {module} run{flag} {extra}".strip()
 
 
 __all__ = ["WORKLOAD_MODULES", "run_command"]
